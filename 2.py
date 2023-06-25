@@ -52,7 +52,7 @@ if live_button:
     fig.add_trace(volume, row=2, col=1)
     
     # Set the layout
-    fig.update_layout(height=600, width=800, title=f'{symbol} Live Chart')
+    fig.update_layout(title=f'{symbol} Live Chart')
     
     # Create an empty plotly_chart for the live closing price graph
     graph_placeholder = st.empty()
