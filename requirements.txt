@@ -1,3 +1,6 @@
 streamlit==1.23.1
 yfinance==0.2.18
 plotly==5.9.0
+pandas==1.4.4
+streamlit-option-menu==0.3.6
+prophet==1.0.1
