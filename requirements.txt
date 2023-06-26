@@ -5,3 +5,5 @@ pandas==1.4.4
 streamlit-option-menu==0.3.6
 prophet==1.0.1
 pystan==2.19.1.1
+cython==0.29.32
+numpy==1.21.5
