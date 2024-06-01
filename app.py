@@ -12554,8 +12554,8 @@ if not selected == "HELP":
         T = yf.Ticker(selected_stocks)
         if selected == "HOME":
             
-            current = T.history(period='1d')['Close'].iloc[-1]
-            last = T.history(period='2d')['Close'].iloc[-2]
+            current = T.history()['Close'].iloc[-1]
+            last = T.history()['Close'].iloc[-2]
             change = current - last
             percentage_change = (change / last) * 100
             current_formatted = f"₹{current:.2f}"
