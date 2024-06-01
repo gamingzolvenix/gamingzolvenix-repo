@@ -12520,7 +12520,7 @@ percentage_change_formattedN = f"{percentage_changeN:.2f}%"
 
 sensex = yf.Ticker('^BSESN')
 currentS = sensex.history(period='1d')['Close'].iloc[-1]
-lastS = sensex.history(pweriod='2d')['Close'].iloc[-2]
+lastS = sensex.history(period='2d')['Close'].iloc[-2]
 changeS = currentS - lastS
 percentage_changeS = (changeS / lastS) * 100
 current_formattedS = f"₹{currentS:.2f}"
