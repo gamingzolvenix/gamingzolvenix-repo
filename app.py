@@ -12510,8 +12510,8 @@ code = ("", "^NSEI","^BSESN","20MICRONS.NS",
 "ZYDUSWELL.BO")
 
 nifty = yf.Ticker('^NSEI')
-currentN = nifty.history()['Close'].iloc[-1]
-lastN = nifty.history()['Close'].iloc[-2]
+currentN = nifty.history(period='1d')['Close'].iloc[-1]
+lastN = nifty.history(period='2d')['Close'].iloc[-2]
 changeN = currentN - lastN
 percentage_changeN = (changeN / lastN) * 100
 current_formattedN = f"₹{currentN:.2f}"
@@ -12519,8 +12519,8 @@ change_formattedN = f"{changeN:.2f}"
 percentage_change_formattedN = f"{percentage_changeN:.2f}%"
 
 sensex = yf.Ticker('^BSESN')
-currentS = sensex.history()['Close'].iloc[-1]
-lastS = sensex.history()['Close'].iloc[-2]
+currentS = sensex.history(period='1d')['Close'].iloc[-1]
+lastS = sensex.history(pweriod='2d')['Close'].iloc[-2]
 changeS = currentS - lastS
 percentage_changeS = (changeS / lastS) * 100
 current_formattedS = f"₹{currentS:.2f}"
@@ -12554,8 +12554,8 @@ if not selected == "HELP":
         T = yf.Ticker(selected_stocks)
         if selected == "HOME":
             
-            current = T.history()['Close'].iloc[-1]
-            last = T.history()['Close'].iloc[-2]
+            current = T.history(period='1d')['Close'].iloc[-1]
+            last = T.history(period='2d')['Close'].iloc[-2]
             change = current - last
             percentage_change = (change / last) * 100
             current_formatted = f"₹{current:.2f}"
