@@ -5,3 +5,4 @@ pandas
 streamlit_option_menu
 prophet
 numpy
+scikit-learn
