@@ -3,6 +3,8 @@ import streamlit as st
 import time
 import pandas as pd
 from streamlit_option_menu import option_menu
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+import numpy as np
 from datetime import date,datetime,timedelta
 from plotly import graph_objs as go
 from prophet import Prophet
@@ -12874,7 +12876,7 @@ if not selected == "HELP":
         if selected == "FORECAST":
             st.header("Forecasting")
             st.write("---")
-            n_years = st.slider("Months Of Prediction: ", 1, 12)
+            n_years = st.slider("Months Of Prediction: ", 1, 6)
             period = n_years * 30
             
             # Preprocess the data
@@ -12890,14 +12892,14 @@ if not selected == "HELP":
             test_df = df[train_size:]
             
             # Train the Prophet model
-            m = Prophet()
+            m = Prophet(daily_seasonality=True, yearly_seasonality=True)
             m.fit(train_df)
             
             # Make future dataframe and predictions
             future = m.make_future_dataframe(periods=period)
             forecast = m.predict(future)
-            forecast1 = forecast.rename(columns={'ds':'Date','yhat':'Predicted Prices','yhat_lower':'Predicted Lowest','yhat_upper':'Predicted Highest','weekly':'Weekly','yearly':'Yearly'})
-            forelist = ['Date', 'Predicted Prices', 'Predicted Lowest', 'Predicted Highest', 'Weekly', 'Yearly']
+            forecast1 = forecast.rename(columns={'ds':'Date','yhat':'Predicted Prices','yhat_lower':'Predicted Lowest','yhat_upper':'Predicted Highest'})
+            forelist = ['Date', 'Predicted Prices', 'Predicted Lowest', 'Predicted Highest']
             
             st.write("---")
             st.subheader("Forecast Data")
