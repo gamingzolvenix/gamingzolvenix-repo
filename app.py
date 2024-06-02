@@ -12866,10 +12866,7 @@ if not selected == "HELP":
                     title = item['title']
                     source = item['publisher']
                     url = item['link']
-                    if not title or source or url:
-                        title='Not available'
-                        source='Not available'
-                        url='Not available'
+                    
                     st.markdown(f"Title: {title} -- <a href='{url}' style='color: lightgrey;'>See More</a>", unsafe_allow_html=True)
                     st.caption(f"**Source:** {source}")
                    
