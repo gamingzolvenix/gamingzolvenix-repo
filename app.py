@@ -12872,47 +12872,71 @@ if not selected == "HELP":
                    
           
         if selected == "FORECAST":
-            st.header("Forecating")
+            st.header("Forecasting")
             st.write("---")
-            n_years = st.slider ("Months Of Prediction : ",1, 6)
-            period = n_years*30
+            n_years = st.slider("Months Of Prediction: ", 1, 12)
+            period = n_years * 30
+            
+            # Preprocess the data
             df = data.reset_index()[["Date", "Close"]].copy()
             df["Date"] = pd.to_datetime(df["Date"])
             df["DayOfWeek"] = df["Date"].dt.dayofweek
-            df = df[(df["DayOfWeek"] != 5) & (df["DayOfWeek"] != 6)]     
-            df= df.rename(columns={"Date": "ds", "Close": "y"})
+            df = df[(df["DayOfWeek"] != 5) & (df["DayOfWeek"] != 6)]
+            df = df.rename(columns={"Date": "ds", "Close": "y"})
+            
+            # Split the data into training and testing sets
+            train_size = int(len(df) * 0.8)
+            train_df = df[:train_size]
+            test_df = df[train_size:]
+            
+            # Train the Prophet model
             m = Prophet()
-            m.fit(df)
+            m.fit(train_df)
+            
+            # Make future dataframe and predictions
             future = m.make_future_dataframe(periods=period)
-            forecast = m.predict(future)  
-            forecast1=forecast.rename(columns={'ds':'Date','yhat':'Predicted Prices','yhat_lower':'Predicted Lowest','yhat_upper':'Predicted Highest','weekly':'Weekly','yearly':'Yearly'})
-            forelist=['Date','Predicted Prices','Predicted Lowest','Predicted Highest','Weekly','Yearly']
+            forecast = m.predict(future)
+            forecast1 = forecast.rename(columns={'ds':'Date','yhat':'Predicted Prices','yhat_lower':'Predicted Lowest','yhat_upper':'Predicted Highest','weekly':'Weekly','yearly':'Yearly'})
+            forelist = ['Date', 'Predicted Prices', 'Predicted Lowest', 'Predicted Highest', 'Weekly', 'Yearly']
             
             st.write("---")
             st.subheader("Forecast Data")
             st.write(forecast1[forelist])
             st.write('---')
+            
+            # Prediction interval
             st.subheader("Prediction in Interval of Time")
-            Start = st.date_input('Enter start date',value=None)
-            End=st.date_input('Enter End date',value=None)
-            if(Start!=End):
-                selected_forecast=forecast1.loc[(forecast1['Date']>pd.to_datetime(Start))&(forecast1['Date']<=pd.to_datetime(End))]
+            Start = st.date_input('Enter start date', value=None)
+            End = st.date_input('Enter end date', value=None)
+            if Start != End:
+                selected_forecast = forecast1.loc[(forecast1['Date'] > pd.to_datetime(Start)) & (forecast1['Date'] <= pd.to_datetime(End))]
                 st.write(selected_forecast[forelist])
             st.write("---")
-                        
+            
+            # Forecasted Data Graphs
             st.subheader('Forecasted Data Graphs')
             st.write("Actual Prices v/s Predicted Prices")
             fig = go.Figure()
-            fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'],mode='lines', name='Predicted Prices', line=dict(color='red')))
-            fig.add_trace(go.Scatter(x=df['ds'], y=df['y'],mode='lines', name='Actual Prices', marker=dict(color='blue')))
+            fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'], mode='lines', name='Predicted Prices', line=dict(color='red')))
+            fig.add_trace(go.Scatter(x=df['ds'], y=df['y'], mode='lines', name='Actual Prices', marker=dict(color='blue')))
             fig.update_layout(xaxis_rangeslider_visible=False)
-    
             st.plotly_chart(fig)
+            
             st.write("Forecast Components")
             fig2 = m.plot_components(forecast)
             st.write(fig2)
-            st.button("Exit  ")
-        st.write("---")
+            
+            # Calculate and display error metrics
+            st.subheader("Model Performance")
+            y_true = test_df['y']
+            y_pred = forecast.loc[forecast['ds'].isin(test_df['ds']), 'yhat']
+            mae = mean_absolute_error(y_true, y_pred)
+            rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+            st.write(f"Mean Absolute Error (MAE): {mae}")
+            st.write(f"Root Mean Squared Error (RMSE): {rmse}")
+            
+            st.button("Exit")
+            st.write("---")
         
 if selected=="HELP":
     st.write("---")
