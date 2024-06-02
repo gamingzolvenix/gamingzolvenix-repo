@@ -1,9 +1,7 @@
-streamlit
-yfinance
-plotly
-pandas
-streamlit-option-menu
-prophet
-pystan
-cython
-numpy
+streamlit==1.35.0
+yfinance==0.2.40
+plotly==5.22.0
+pandas==2.2.2
+streamlit-option-menu==0.3.1.3
+prophet==1.1.5
+numpy==1.26.4
