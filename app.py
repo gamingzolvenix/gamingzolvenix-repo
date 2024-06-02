@@ -3,7 +3,6 @@ import streamlit as st
 import time
 import pandas as pd
 from streamlit_option_menu import option_menu
-from sklearn.metrics import mean_absolute_error, mean_squared_error
 import numpy as np
 from datetime import date,datetime,timedelta
 from plotly import graph_objs as go
@@ -12876,7 +12875,7 @@ if not selected == "HELP":
         if selected == "FORECAST":
             st.header("Forecasting")
             st.write("---")
-            n_years = st.slider("Months Of Prediction: ", 1, 6)
+            n_years = st.slider("Months Of Prediction: ", 1, 24)
             period = n_years * 30
             
             # Preprocess the data
@@ -12886,14 +12885,9 @@ if not selected == "HELP":
             df = df[(df["DayOfWeek"] != 5) & (df["DayOfWeek"] != 6)]
             df = df.rename(columns={"Date": "ds", "Close": "y"})
             
-            # Split the data into training and testing sets
-            train_size = int(len(df) * 0.8)
-            train_df = df[:train_size]
-            test_df = df[train_size:]
-            
             # Train the Prophet model
             m = Prophet(daily_seasonality=True, yearly_seasonality=True)
-            m.fit(train_df)
+            m.fit(df)
             
             # Make future dataframe and predictions
             future = m.make_future_dataframe(periods=period)
@@ -12927,15 +12921,6 @@ if not selected == "HELP":
             st.write("Forecast Components")
             fig2 = m.plot_components(forecast)
             st.write(fig2)
-            
-            # Calculate and display error metrics
-            st.subheader("Model Performance")
-            y_true = test_df['y']
-            y_pred = forecast.loc[forecast['ds'].isin(test_df['ds']), 'yhat']
-            mae = mean_absolute_error(y_true, y_pred)
-            rmse = np.sqrt(mean_squared_error(y_true, y_pred))
-            st.write(f"Mean Absolute Error (MAE): {mae}")
-            st.write(f"Root Mean Squared Error (RMSE): {rmse}")
             
             st.button("Exit")
             st.write("---")
