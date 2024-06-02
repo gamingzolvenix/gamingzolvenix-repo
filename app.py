@@ -12686,7 +12686,7 @@ if not selected == "HELP":
             
             st.write("See Data in a Time Interval")
             col1, col2, col3 = st.columns(3)
-            t = ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
+            t = ["1m", "5m", "15m", "30m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
             
             today = datetime.today().date()
             start_date = (today - timedelta(days=7))
@@ -12700,11 +12700,11 @@ if not selected == "HELP":
             
            
             
-            if selected_interval == "1m":
+            if selected_interval in ["1m", "5m", "15m"]:
                 max_date_diff = timedelta(days=7)
-            elif selected_interval in ["2m", "5m", "15m", "30m", "90m"]: 
+            elif selected_interval in ["30m", "90m"]: 
                 max_date_diff = timedelta(days=60)
-            elif selected_interval in ["60m", "1h"]:
+            elif selected_interval in ["1h"]:
                 max_date_diff = timedelta(days=730)
             else:
                 max_date_diff = None
