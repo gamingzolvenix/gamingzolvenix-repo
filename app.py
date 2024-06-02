@@ -12616,8 +12616,8 @@ if not selected == "HELP":
                 exit_clicked = False 
 
                 while not exit_clicked:
-                    current = T.history(period='1d')['Close'].iloc[-1]
-                    last = T.history(period='2d')['Close'].iloc[-2]
+                    current = T.history(period='5d')['Close'].iloc[-1]
+                    last = T.history(period='5d')['Close'].iloc[-2]
                     change = current - last
                     percentage_change = (change / last) * 100
                     current_formatted = f"₹{current:.2f}"
@@ -12686,7 +12686,7 @@ if not selected == "HELP":
             
             st.write("See Data in a Time Interval")
             col1, col2, col3 = st.columns(3)
-            t = ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
+            t = ["1m", "5m", "15m", "30m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
             
             today = datetime.today().date()
             start_date = (today - timedelta(days=7))
@@ -12702,7 +12702,7 @@ if not selected == "HELP":
             
             if selected_interval == "1m":
                 max_date_diff = timedelta(days=7)
-            elif selected_interval in ["2m", "5m", "15m", "30m", "90m"]: 
+            elif selected_interval in ["5m", "15m", "30m", "90m"]: 
                 max_date_diff = timedelta(days=60)
             elif selected_interval in ["60m", "1h"]:
                 max_date_diff = timedelta(days=730)
@@ -12866,6 +12866,10 @@ if not selected == "HELP":
                     title = item['title']
                     source = item['publisher']
                     url = item['link']
+                    if not title or source or url:
+                        title='Not available'
+                        source='Not available'
+                        url='Not available'
                     st.markdown(f"Title: {title} -- <a href='{url}' style='color: lightgrey;'>See More</a>", unsafe_allow_html=True)
                     st.caption(f"**Source:** {source}")
                    
