@@ -12566,7 +12566,7 @@ if not selected == "HELP":
             
             data_reset = data.reset_index()
             fig = go.Figure()
-            fig.add_trace(go.Scatter(x=data_reset['Date'], y=data_reset['Adj Close'], name="Prices", line=dictcolor=((change>0) ? 'green' : 'red'))
+            fig.add_trace(go.Scatter(x=data_reset['Date'], y=data_reset['Adj Close'], name="Prices", line=dict(color=((change>0) ? 'green' : 'red')))
             fig.layout.update(title_text="Prices", xaxis_rangeslider_visible=True)
             st.plotly_chart(fig)
             st.write("---")
