@@ -12564,7 +12564,7 @@ if not selected == "HELP":
             percentage_change_formatted = f"{percentage_change:.2f}%"
             st.metric(label=T.info['longName'], value=current_formatted, delta=f"{change_formatted} ({percentage_change_formatted})")
 
-            colours = change > 0 ? 'green' : 'red'
+            colours = (change > 0) ? 'green' : 'red'
             data_reset = data.reset_index()
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=data_reset['Date'], y=data_reset['Adj Close'], name="Prices", line=dict(color=colours)))
